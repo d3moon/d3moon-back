@@ -1,0 +1,21 @@
+const express = require('express');
+const connectDatabase = require('./src/config/database');
+const userRoutes = require('./src/users/routes/userRoutes.js');
+const mernRoutes = require('./src/contents/mern/routes/mernRoutes');
+const authRoutes = require('./src/auth/routes/authRoutes')
+
+const app = express();
+
+connectDatabase();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(userRoutes);
+app.use(mernRoutes);
+app.use(authRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
