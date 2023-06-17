@@ -7,8 +7,6 @@ const createUser = async (req, res) => {
       fullname,
       nickname, 
       profile_picker,
-      progress,
-      badges
     } = req.body
 
     const user = {
@@ -16,8 +14,6 @@ const createUser = async (req, res) => {
       fullname,
       nickname,
       profile_picker,
-      progress,
-      badges
     }
     await userService.createUser(user);
     return res.status(201).json({message: 'Usuário criado com sucesso!'});
@@ -25,6 +21,21 @@ const createUser = async (req, res) => {
     res.status(500).json({ message: 'Erro ao criar usuário!', error });
   }
 };
+
+const signContent = async (req, res) => {
+  try {
+    const { id, nameContent } = req.body
+    const { userId } = req.params
+    const result = await userService.signContent(id, userId, nameContent);
+    if(!result) {
+      return res.status(404).json({message: 'Content não encontrado'})
+    }
+    return res.status(201).json({ message: 'Content assinado com sucesso!' });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao assinar content!', error });
+  }
+};
+
 
 const getUserById = async (req, res) => {
   try {
@@ -115,6 +126,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   createUser,
+  signContent,
   getUserById,
   getUsers,
   updateUser,

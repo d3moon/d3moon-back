@@ -4,6 +4,7 @@ const mernController = require('../controllers/mernController');
 
 
 //contents
-router.get('/contents/mern', mernController.getContentMern);
+router.get('/contents/:contentId', mernController.getContentMern);
+router.put('/contents/progress', mernController.setContentProgress);
 
 module.exports = router;

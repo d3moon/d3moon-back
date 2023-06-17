@@ -24,9 +24,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required:true
   },
-  progress: [],
-  badges: []
-
+  content: []
 });
 
 const User = mongoose.model('User', UserSchema);

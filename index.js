@@ -2,6 +2,7 @@ const express = require('express');
 const connectDatabase = require('./src/config/database');
 const userRoutes = require('./src/users/routes/userRoutes.js');
 const mernRoutes = require('./src/contents/mern/routes/mernRoutes');
+const paperRoutes = require('./src/papers/routes/paperRoutes');
 const authRoutes = require('./src/auth/routes/authRoutes')
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(userRoutes);
 app.use(mernRoutes);
 app.use(authRoutes);
+app.use(paperRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

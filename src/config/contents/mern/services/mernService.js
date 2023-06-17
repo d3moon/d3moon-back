@@ -1,4 +1,4 @@
-const { youtube, oauth2Client } = require('../../../config/google');
+const { youtube, oauth2Client } = require('../../../google');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config()
 

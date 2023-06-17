@@ -9,7 +9,7 @@ const auth = async (req, res) => {
     redirect_uri: process.env.REDIRECT_URI
   });
 
-  res.status(200).json({ auth_url: authorizeUrl });
+  res.status(200).send({ auth_url: authorizeUrl });
 
   const { code } = req.query;
 
