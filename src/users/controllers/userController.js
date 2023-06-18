@@ -30,12 +30,37 @@ const signContent = async (req, res) => {
     if(!result) {
       return res.status(404).json({message: 'Content não encontrado'})
     }
+
+    if (result === 'Você já possui esse treinamento'){
+      return res.status(200).json({ message: 'Você já possui esse treinamento'})
+    }
     return res.status(201).json({ message: 'Content assinado com sucesso!' });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao assinar content!', error });
   }
 };
 
+const setContentProgress = async (req, res) => {
+  const { userId, nameContent } = req.body;
+
+  const user = await userService.getUserById(userId);
+
+  if (!user) {
+    return res.status(404).json({ message: "Usuário não encontrado" })
+  }
+
+  const result = await userService.setContentProgress(userId, nameContent);
+
+  if (!result) {
+    return res.status(404).json({ message: 'Content não encontrado'})
+  }
+
+  if (result === 100){
+    return res.status(200).json({message: "Você já concluiu o treinamento"})
+  }
+
+  return res.status(201).json({ message: 'Progresso atualizado com sucesso!' })
+};
 
 const getUserById = async (req, res) => {
   try {
@@ -51,8 +76,8 @@ const getUserById = async (req, res) => {
       nickname: user.nickname,
       profile_picker: user.profile_picker,
       access_code: user.access_code,
-      progress: user.progress,
-      badges: user.badges
+      badges: user.badges,
+      content: user.content
     }
     return res.status(200).json(result);
   } catch (error) {
@@ -70,8 +95,9 @@ const getUsers = async (req, res) => {
         nickname: user.nickname,
         profile_picker: user.profile_picker,
         access_code: user.access_code,
-        progress: user.progress,
-        badges: user.badges
+        badges: user.badge,
+        content: user.content
+  
       }
     })
 
@@ -102,33 +128,12 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
-  try {
-    const { id } = req.params
-    const {
-      fullname,
-      nickname,
-      profile_picker,
-    } = req.body
-
-    const user = await userService.deleteUser(id, { fullname, nickname, profile_picker });
-
-    if (!user) {
-      return res.status(404).json({ message: 'Usuário não encontrado!' })
-    }
-
-    return res.status(200).json({message: 'Usuário Deletado!'});
-  } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar usuário!', error });
-  }
-};
-
 
 module.exports = {
   createUser,
   signContent,
+  setContentProgress,
   getUserById,
   getUsers,
-  updateUser,
-  deleteUser
+  updateUser
 };

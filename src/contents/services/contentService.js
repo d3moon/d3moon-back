@@ -1,8 +1,7 @@
-const { youtube, oauth2Client } = require('../../../google');
-const { v4: uuidv4 } = require('uuid');
+const { youtube, oauth2Client } = require('../../config/google');
 require('dotenv').config()
 
-const getContentMern = async (contentId)=> {
+const getContent = async (contentId)=> {
 
   const response = await youtube.playlistItems.list({
     auth: oauth2Client,
@@ -17,6 +16,8 @@ const getContentMern = async (contentId)=> {
 };
 
 
+
+
 module.exports = {
-  getContentMern
+  getContent
 };

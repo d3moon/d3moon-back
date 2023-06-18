@@ -1,6 +1,10 @@
 const userRepository = require('../repositories/userRepository.js');
-const mernService = require('../../config/contents/mern/services/mernService.js');
+const contentService = require('../../contents/services/contentService.js');
 const paperService = require('../../papers/services/paperService.js');
+const schedule = require('node-schedule');
+  
+const { getStorage, ref, getDownloadURL } = require('firebase/storage');
+
 require('dotenv').config()
 
 const createUser = async (user) => {
@@ -13,7 +17,7 @@ const createUser = async (user) => {
 };
 
 const signContent = async (id, userId, nameContent) => {
-    const contents = await mernService.getContentMern(id);
+    const contents = await contentService.getContent(id);
     const user = await userRepository.getUserById(userId);
 
    const result = contents.data.items.map((content)=> (
@@ -27,10 +31,13 @@ const signContent = async (id, userId, nameContent) => {
 
     const papers = await paperService.listPapers()
 
+    if (user.content.name === nameContent){
+      return new Error('Você já possui esse treinamento')
+    }
+
     
     user.content = {
       name: nameContent,
-      badges: [],
       progress: 0,
       videos: result,
       papers: papers
@@ -40,11 +47,48 @@ const signContent = async (id, userId, nameContent) => {
 };
 
 
+const setContentProgress = async (userId, nameContent) => {
+  const user = await userRepository.getUserById(userId);
+
+  const content = user.content.find(contentItem => contentItem.name === nameContent);
+
+  if (content === undefined) {
+    return;
+  };
+
+  const videos = content.videos.length;
+  const watched = 1;
+
+  if(content.progress === 100){
+    const storage = getStorage()
+    const badgeRef = ref(storage, 'badge/badge.png');
+
+    const url = await getDownloadURL(badgeRef);
+
+    content.badge = url;
+
+    await userRepository.updateUser(userId, user);
+    return 100;
+  }
+
+  content.progress = content.progress ? parseInt(content.progress, 10) : 0;
+
+  const progress = (watched / videos) * 100;
+
+  content.progress += progress;
+
+  const response = await userRepository.updateUser(userId, user);
+
+  return response;
+}
+
+
 const getUserById = async (id) => userRepository.getUserById(id);
 
 const getUsers = async () => userRepository.getUsers();
 
 const updateUser = async (id, body) => userRepository.updateUser(id, body);
+
 
 const deleteUser = async (id, body) => {
   const user = await userRepository.getUserById(id);
@@ -55,10 +99,21 @@ const deleteUser = async (id, body) => {
   } 
 }
 
+const checkAndDeleteExpiredUsers = async () => {
+  const users = await getUsers();
+
+  for (const user of users) {
+    await deleteUser(user.id);
+  }
+}
+
+schedule.scheduleJob('0 0 * * *', checkAndDeleteExpiredUsers);
+
 
 module.exports = {
   createUser,
   signContent,
+  setContentProgress,
   getUserById,
   getUsers,
   updateUser,
