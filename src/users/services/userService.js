@@ -2,6 +2,7 @@ const userRepository = require('../repositories/userRepository.js');
 const contentService = require('../../contents/services/contentService.js');
 const paperService = require('../../papers/services/paperService.js');
 const schedule = require('node-schedule');
+
   
 const { getStorage, ref, getDownloadURL } = require('firebase/storage');
 
@@ -12,7 +13,10 @@ const createUser = async (user) => {
   accessCodeExpiration.setDate(accessCodeExpiration.getDate() + 7); 
   const code = accessCodeExpiration.toISOString();
 
-  user.access_code = code;
+  user.access_code = {
+    code: Math.random().toString().slice(2, 11),
+    date: code
+  };
   return userRepository.createUser(user);
 };
 

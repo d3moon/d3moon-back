@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
   access_code: {
-    type: String,
+    type: Object,
     required:true
   },
   content: []
