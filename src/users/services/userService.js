@@ -89,6 +89,8 @@ const setContentProgress = async (userId, nameContent) => {
 
 const getUserById = async (id) => userRepository.getUserById(id);
 
+const getUserByCode = async (code) => userRepository.getUserByCode(code);
+
 const getUsers = async () => userRepository.getUsers();
 
 const updateUser = async (id, body) => userRepository.updateUser(id, body);
@@ -119,6 +121,7 @@ module.exports = {
   signContent,
   setContentProgress,
   getUserById,
+  getUserByCode,
   getUsers,
   updateUser,
   deleteUser

@@ -85,6 +85,22 @@ const getUserById = async (req, res) => {
   }
 };
 
+const getUserByCode = async (req, res) => {
+  try {
+    const { code } = req.params
+
+    const user = await userService.getUserByCode(code);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado!' })
+    }
+  
+    return res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao buscar usuário!', error });
+  }
+};
+
 const getUsers = async (req, res) => {
   try {
     const users = await userService.getUsers();
@@ -134,6 +150,7 @@ module.exports = {
   signContent,
   setContentProgress,
   getUserById,
+  getUserByCode,
   getUsers,
   updateUser
 };

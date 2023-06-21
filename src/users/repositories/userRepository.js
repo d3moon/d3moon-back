@@ -8,6 +8,10 @@ const getUserById = async (id) => {
   return await User.findOne({ id });
 };
 
+const getUserByCode = async (code) => {
+  return await User.findOne({ 'access_code.code': code });
+};
+
 const getUsers = async () => {
   return await User.find();
 };
@@ -23,6 +27,7 @@ const deleteUser = async (id, body) => {
 module.exports = {
   createUser,
   getUserById,
+  getUserByCode,
   getUsers,
   updateUser,
   deleteUser
