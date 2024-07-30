@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const connectDatabase = require('./src/config/database');
 const userRoutes = require('./src/users/routes/userRoutes.js');
 const contentRoutes = require('./src/contents/routes/contentRoutes');
@@ -7,6 +8,9 @@ const badgeRoutes = require('./src/badges/routes/badgeRoutes');
 const authRoutes = require('./src/auth/routes/authRoutes')
 
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:3001'
+}));
 
 connectDatabase();
 

@@ -30,8 +30,9 @@ const signContent = async (id, userId, nameContent) => {
        thumbnails: content.snippet.thumbnails.maxres,
        videoId: content.snippet.resourceId.videoId
     }
-    ));
+    )); 
 
+    console.log(result)
 
     const papers = await paperService.listPapers()
 
@@ -44,7 +45,8 @@ const signContent = async (id, userId, nameContent) => {
       name: nameContent,
       progress: 0,
       videos: result,
-      papers: papers
+      papers: papers,
+      idPlaylist: id
     };
 
     return userRepository.updateUser(userId, user);

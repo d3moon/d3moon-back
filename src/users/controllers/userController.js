@@ -34,6 +34,8 @@ const signContent = async (req, res) => {
     if (result === 'Você já possui esse treinamento'){
       return res.status(200).json({ message: 'Você já possui esse treinamento'})
     }
+
+    console.log(result)
     return res.status(201).json({ message: 'Content assinado com sucesso!' });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao assinar content!', error });
@@ -130,6 +132,7 @@ const updateUser = async (req, res) => {
       fullname,
       nickname,
       profile_picker,
+      idPlaylist
     } = req.body
 
     const user = await userService.updateUser(id, { fullname, nickname, profile_picker});
