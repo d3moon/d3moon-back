@@ -2,17 +2,18 @@ const contentService = require('../services/contentService')
 
 const getContent = async (req, res) => {
   const { contentId } = req.params;
-  const response = await contentService.getContent(contentId)
+  const response = await contentService.getContent(contentId);
 
-  if(!response){
-    return res.status(404).json({message: 'Content não encontrado!'})
+  if (!response) {
+    return res.status(404).json({ message: 'Conteúdo não encontrado!' });
   }
 
-  const playlistItems = response.data.items[0];
+  // Aqui pegamos todos os itens da playlist, em vez de apenas o primeiro
+  const playlistItems = response.data.items;
 
-  return res.status(200).json(playlistItems)
-
+  return res.status(200).json(playlistItems);
 };
+
 
 const getVideo = async (req, res) => {
   console.log(req.params);
