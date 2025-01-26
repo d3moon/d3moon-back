@@ -4,7 +4,7 @@ const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  storageBucket: process.env.STORAGE_BUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.FIREBASE_APP_ID,
   measurementId: process.env.FIREBASE_MEASUREMENT_ID
@@ -33,12 +33,14 @@ const downloadPapers = async (req, res) => {
 
     res.setHeader('Content-Type', response.headers.get('Content-Type'));
     res.setHeader('Content-Length', response.headers.get('Content-Length'));
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`); // Força o download
     return res.status(response.status).send(blob);
   } catch (error) {
     console.error('Erro ao baixar arquivo:', error);
     res.status(500).json({ error: 'Ocorreu um erro ao baixar o arquivo.' });
   }
 };
+
 
 const listPapers = async (req, res) => {
   try {

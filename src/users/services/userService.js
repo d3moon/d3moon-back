@@ -21,37 +21,44 @@ const createUser = async (user) => {
 };
 
 const signContent = async (id, userId, nameContent) => {
-    const contents = await contentService.getContent(id);
-    const user = await userRepository.getUserById(userId);
+  const contents = await contentService.getContent(id);
+  const user = await userRepository.getUserById(userId);
 
-   const result = contents.data.items.map((content)=> (
-     {
-       title: content.snippet.title,
-       thumbnails: content.snippet.thumbnails.maxres,
-       videoId: content.snippet.resourceId.videoId
-    }
-    )); 
+  const result = contents.data.items.map((content) => ({
+    title: content.snippet.title,
+    thumbnails: content.snippet.thumbnails.maxres,
+    videoId: content.snippet.resourceId.videoId,
+  }));
 
-    console.log(result)
+  console.log(result);
 
-    const papers = await paperService.listPapers()
+  const papers = await paperService.listPapers();
 
-    if (user.content.name === nameContent){
-      return new Error('Você já possui esse treinamento')
-    }
+  // Verifica se o conteúdo já foi assinado
+  if (user.content && user.content.some((content) => content.name === nameContent)) {
+    return 'Você já possui esse treinamento';
+  }
 
-    
-    user.content = {
-      name: nameContent,
-      progress: 0,
-      videos: result,
-      papers: papers,
-      idPlaylist: id
-    };
+  // Adiciona o novo conteúdo ao array de conteúdos do usuário
+  const newContent = {
+    name: nameContent,
+    progress: 0,
+    videos: result,
+    papers: papers,
+    idPlaylist: id,
+  };
 
-    return userRepository.updateUser(userId, user);
+  if (!user.content) {
+    user.content = [];
+  }
+
+  user.content.push(newContent);
+
+  // Atualiza o usuário no banco de dados
+  await userRepository.updateUser(userId, user);
+
+  return user.content;
 };
-
 
 const setContentProgress = async (userId, nameContent) => {
   const user = await userRepository.getUserById(userId);

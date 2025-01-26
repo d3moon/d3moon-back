@@ -24,23 +24,27 @@ const createUser = async (req, res) => {
 
 const signContent = async (req, res) => {
   try {
-    const { id, nameContent } = req.body
-    const { userId } = req.params
+    const { id, nameContent } = req.body;
+    const { userId } = req.params;
+    
+    // Obtém o conteúdo a ser assinado
     const result = await userService.signContent(id, userId, nameContent);
-    if(!result) {
-      return res.status(404).json({message: 'Content não encontrado'})
+
+    if (!result) {
+      return res.status(404).json({ message: 'Content não encontrado' });
     }
 
-    if (result === 'Você já possui esse treinamento'){
-      return res.status(200).json({ message: 'Você já possui esse treinamento'})
+    if (result === 'Você já possui esse treinamento') {
+      return res.status(200).json({ message: 'Você já possui esse treinamento' });
     }
 
-    console.log(result)
+    console.log(result);
     return res.status(201).json({ message: 'Content assinado com sucesso!' });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao assinar content!', error });
   }
 };
+
 
 const setContentProgress = async (req, res) => {
   const { userId, nameContent } = req.body;
