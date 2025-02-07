@@ -9,7 +9,7 @@ const authRoutes = require('./src/auth/routes/authRoutes')
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:3001'
+  origin: 'https://d3moon-core-666.vercel.app/'
 }));
 
 connectDatabase();
