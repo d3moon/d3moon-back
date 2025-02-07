@@ -8,7 +8,7 @@ const oauth2Client = new google.auth.OAuth2(
 
 );
 
-const apiKey = process.env.API_KEY;
+const apiKey = process.env.ADDITIONAL_API_KEY;
 
 const youtube = google.youtube({
   version: 'v3',
