@@ -8,9 +8,7 @@ const badgeRoutes = require('./src/badges/routes/badgeRoutes');
 const authRoutes = require('./src/auth/routes/authRoutes')
 
 const app = express();
-app.use(cors({
-  origin: '*'
-}));
+app.use(cors());
 
 connectDatabase();
 
