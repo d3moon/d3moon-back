@@ -8,7 +8,8 @@ const badgeRoutes = require('./src/badges/routes/badgeRoutes');
 const authRoutes = require('./src/auth/routes/authRoutes')
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: 'https://d3moon-core-666.vercel.app' })); // Permitir o domínio específico
+
 
 connectDatabase();
 
