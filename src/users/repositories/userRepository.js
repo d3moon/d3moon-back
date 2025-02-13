@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const mongoose = require('mongoose');
 
 const createUser = async (user) => {
   return await User.create(user);
@@ -17,7 +18,7 @@ const getUsers = async () => {
 };
 
 const updateUser = async (id, body) => {
-  return await User.findOneAndUpdate(id, body);
+  return await User.findOneAndUpdate({ id: id }, body, { new: true, runValidators: true });
 };
 
 const deleteUser = async (id, body) => {

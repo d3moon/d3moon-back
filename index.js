@@ -6,6 +6,8 @@ const contentRoutes = require("./src/contents/routes/contentRoutes");
 const paperRoutes = require("./src/papers/routes/paperRoutes");
 const badgeRoutes = require("./src/badges/routes/badgeRoutes");
 const authRoutes = require("./src/auth/routes/authRoutes");
+require('dotenv').config()
+
 
 const app = express();
 const allowedOrigins = ["https://d3moon-core-666.vercel.app"];

@@ -30,8 +30,6 @@ const signContent = async (id, userId, nameContent) => {
     videoId: content.snippet.resourceId.videoId,
   }));
 
-  console.log(result);
-
   const papers = await paperService.listPapers();
 
   // Verifica se o conteúdo já foi assinado
@@ -54,9 +52,10 @@ const signContent = async (id, userId, nameContent) => {
 
   user.content.push(newContent);
 
+  console.log(user)
+
   // Atualiza o usuário no banco de dados
   await userRepository.updateUser(userId, user);
-
   return user.content;
 };
 
