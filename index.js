@@ -13,7 +13,7 @@ const app = express();
 const allowedOrigins = ["https://d3moon-core-666.vercel.app"];
 
 if (process.env.ENV === 'DEV') {
-  allowedOrigins.push("http://localhost:3000");
+  allowedOrigins.push("http://localhost:3001");
 
   const PORT = process.env.PORT || 3000;
 
